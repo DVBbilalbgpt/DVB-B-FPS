@@ -3,333 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B-FPS Launcher v4.0 Ultimate - DVB Technologies</title>
+    <title>DVB B-FPS Launcher v5.0 Pro APK Core</title>
     <style>
         :root {
             --neon-green: #00ff66;
             --orange-main: #ff6000;
-            --dark-bg: #080c10;
-            --panel-bg: #10151d;
+            --dark-bg: #06090d;
+            --panel-bg: #0d1117;
             --text-color: #c9d1d9;
             --border-color: #21262d;
-            --terminal-bg: #05070a;
+            --terminal-bg: #040608;
         }
         body {
-            background-color: var(--dark-bg);
-            color: var(--text-color);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--dark-bg); color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0; padding: 0; height: 100vh;
             display: flex; flex-direction: column; overflow: hidden;
             user-select: none;
         }
         header {
-            background-color: var(--panel-bg);
-            border-bottom: 2px solid var(--border-color);
-            padding: 12px 20px; display: flex;
-            justify-content: space-between; align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            background-color: var(--panel-bg); border-bottom: 2px solid var(--border-color);
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
         }
-        header h1 { color: var(--orange-main); margin: 0; font-size: 24px; letter-spacing: 1px; font-weight: 800; }
-        header h1 span { color: #fff; font-size: 11px; margin-left: 10px; font-weight: normal; letter-spacing: 0px; opacity: 0.7; }
+        header h1 { color: var(--orange-main); margin: 0; font-size: 22px; letter-spacing: 1px; font-weight: 800; }
+        header h1 span { color: #fff; font-size: 11px; margin-left: 10px; font-weight: normal; opacity: 0.6; }
         
         .main-layout { display: flex; flex: 1; overflow: hidden; }
 
-        /* SOL PANEL: GELİŞMİŞ OYUN SEÇİCİ */
+        /* JENERİK OYUN LİSTESİ PANELİ */
         .sidebar {
-            width: 280px; background-color: var(--panel-bg);
+            width: 290px; background-color: var(--panel-bg);
             border-right: 2px solid var(--border-color);
-            padding: 15px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto;
+            padding: 15px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto;
         }
         .sidebar-title {
             font-size: 11px; text-transform: uppercase; color: #8b949e;
             letter-spacing: 1.5px; margin-bottom: 5px; font-weight: bold;
             border-bottom: 1px solid var(--border-color); padding-bottom: 5px;
+            display: flex; justify-content: space-between;
         }
         .game-item {
-            background: #161c26; border: 1px solid var(--border-color);
-            padding: 14px; border-radius: 10px; cursor: pointer;
-            font-weight: bold; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; align-items: center; gap: 14px;
+            background: #12161f; border: 1px solid var(--border-color);
+            padding: 12px; border-radius: 10px; cursor: pointer;
+            font-weight: bold; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 12px;
         }
-        .game-item img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; border: 1px solid #30363d; }
+        .game-item .game-icon-placeholder {
+            width: 34px; height: 34px; border-radius: 8px;
+            background: linear-gradient(135deg, #1f293a, #30363d);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: #fff; border: 1px solid #30363d;
+        }
         .game-item:hover, .game-item.active {
-            border-color: var(--neon-green); background: #1f293a; color: #fff;
-            transform: translateX(4px); box-shadow: 0 0 15px rgba(0, 255, 102, 0.15);
+            border-color: var(--neon-green); background: #1c2331; color: #fff;
+            transform: translateX(4px); box-shadow: 0 0 12px rgba(0, 255, 102, 0.15);
         }
 
-        /* MERKEZ KONTROL ALANI */
+        /* MERKEZ ALAN */
         .content-area {
             flex: 1; padding: 20px; display: flex;
             flex-direction: column; justify-content: space-between; overflow-y: auto; position: relative;
         }
         
         .center-grid {
-            display: grid; grid-template-columns: 180px 1fr; gap: 20px; width: 100%; max-width: 800px; margin: 0 auto;
+            display: grid; grid-template-columns: 160px 1fr; gap: 20px; width: 100%; max-width: 800px; margin: 0 auto;
         }
-
-        /* GERÇEK DİNAMİK LOGO */
         .logo-display {
-            width: 180px; height: 180px; background: #161c26;
-            border: 3px solid var(--border-color); border-radius: 32px;
+            width: 160px; height: 160px; background: #12161f;
+            border: 3px solid var(--border-color); border-radius: 28px;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; transition: all 0.3s;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.7);
+            font-size: 64px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
-        .logo-display img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* GFX SEÇENEKLERİ VE AYARLAR */
         .gfx-panel {
-            background: #121822; border: 1px solid var(--border-color);
-            border-radius: 16px; padding: 15px; display: flex; flex-direction: column; gap: 10px;
+            background: #0f131a; border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 15px; display: flex; flex-direction: column; gap: 8px;
         }
         .gfx-title { font-size: 12px; text-transform: uppercase; color: var(--orange-main); font-weight: bold; }
         .gfx-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .gfx-select {
-            background: #1c2331; color: #fff; border: 1px solid var(--border-color);
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; outline: none;
+            background: #161b22; color: #fff; border: 1px solid var(--border-color);
+            padding: 5px 10px; border-radius: 6px; cursor: pointer; outline: none;
         }
 
-        /* TELEFON DONANIM HUD PANELİ */
-        .hud-display { display: flex; gap: 15px; width: 100%; max-width: 800px; margin: 10px auto; }
-        .hud-card { flex: 1; background: #121822; border: 1px solid var(--border-color); padding: 12px; border-radius: 10px; text-align: center; }
-        .hud-label { font-size: 11px; color: #8b949e; text-transform: uppercase; }
-        .hud-val { font-size: 18px; font-weight: bold; color: #fff; margin-top: 4px; }
+        .hud-display { display: flex; gap: 12px; width: 100%; max-width: 800px; margin: 10px auto; }
+        .hud-card { flex: 1; background: #0f131a; border: 1px solid var(--border-color); padding: 10px; border-radius: 8px; text-align: center; }
+        .hud-label { font-size: 10px; color: #8b949e; text-transform: uppercase; }
+        .hud-val { font-size: 16px; font-weight: bold; color: #fff; margin-top: 3px; }
 
-        /* AKSİYON TETİKLEYİCİ BUTONLAR */
-        .action-zone { text-align: center; margin: 15px 0; }
+        .action-zone { text-align: center; margin: 10px 0; }
         .btn-main {
             background: linear-gradient(135deg, #ff6000, #ff8800); color: #fff;
-            border: none; padding: 18px 80px; font-size: 20px;
-            font-weight: 900; border-radius: 14px; cursor: pointer;
-            text-transform: uppercase; box-shadow: 0 6px 20px rgba(255, 96, 0, 0.3);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none; padding: 16px 70px; font-size: 18px;
+            font-weight: 900; border-radius: 12px; cursor: pointer;
+            text-transform: uppercase; box-shadow: 0 5px 15px rgba(255, 96, 0, 0.3);
+            transition: all 0.2s;
         }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 30px rgba(255, 96, 0, 0.5); }
-        .btn-main:active { transform: scale(0.98); }
+        .btn-main:hover { transform: scale(1.02); box-shadow: 0 0 25px rgba(255, 96, 0, 0.4); }
         
         .btn-success {
             display: none; background: linear-gradient(135deg, #00c853, #00ff66); color: #000;
-            border: none; padding: 18px 60px; font-size: 18px;
-            font-weight: 900; border-radius: 14px; cursor: pointer;
-            text-transform: uppercase; box-shadow: 0 6px 20px rgba(0,255,102,0.3);
+            border: none; padding: 16px 60px; font-size: 18px;
+            font-weight: 900; border-radius: 12px; cursor: pointer;
+            text-transform: uppercase; box-shadow: 0 5px 15px rgba(0,255,102,0.3);
             margin: 0 auto; animation: pulse 2s infinite;
         }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,255,102,0.7); } 70% { box-shadow: 0 0 0 15px rgba(0,255,102,0); } 100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,255,102,0.6); } 70% { box-shadow: 0 0 0 12px rgba(0,255,102,0); } 100% { box-shadow: 0 0 0 0 rgba(0,255,102,0); } }
 
-        /* B-GPT DİNAMİK SİBER TERMİNAL */
         .terminal-box {
             width: 100%; max-width: 800px; background: var(--terminal-bg);
             border: 1px solid var(--border-color); border-top: 4px solid var(--neon-green);
-            border-radius: 6px; padding: 15px; box-sizing: border-box; margin: 0 auto;
-            height: 130px; overflow-y: auto; font-family: 'Courier New', Courier, monospace;
+            border-radius: 6px; padding: 12px; box-sizing: border-box; margin: 0 auto;
+            height: 120px; overflow-y: auto; font-family: monospace;
         }
-        .term-header { font-size: 12px; font-weight: bold; color: var(--neon-green); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-        .term-line { font-size: 12px; line-height: 1.4; margin-bottom: 4px; color: #a3b3c2; }
+        .term-header { font-size: 11px; font-weight: bold; color: var(--neon-green); margin-bottom: 6px; }
+        .term-line { font-size: 12px; line-height: 1.4; margin-bottom: 3px; color: #a3b3c2; }
 
-        /* SİBER OPTİMİZASYON PERDESİ */
         .booster-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 7, 10, 0.98); display: flex;
+            background: rgba(4, 6, 8, 0.98); display: flex;
             flex-direction: column; align-items: center; justify-content: center;
             z-index: 999; display: none;
         }
         .matrix-loader {
-            width: 60px; height: 60px; border: 4px dashed var(--neon-green);
-            border-radius: 50%; animation: rotateLoader 1.5s linear infinite; margin-bottom: 25px;
+            width: 50px; height: 50px; border: 4px dashed var(--neon-green);
+            border-radius: 50%; animation: rotateLoader 1.5s linear infinite; margin-bottom: 20px;
         }
         @keyframes rotateLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .status-log { font-family: 'Courier New', monospace; font-size: 15px; color: var(--neon-green); text-align: center; min-height: 40px; }
+        .status-log { font-family: monospace; font-size: 14px; color: var(--neon-green); text-align: center; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>B-FPS LAUNCHER <span>v4.0 PRO ENGINE // DVB TECHNOLOGIES</span></h1>
-        <div id="liveNetwork" style="color: var(--neon-green); font-weight: bold; font-size: 12px; font-family: monospace;">PING: OLYMPIA_CONNECTED</div>
+        <h1>DVB B-FPS LAUNCHER <span>v5.0 CORE // POWERED BY B-GPT</span></h1>
+        <div id="liveNetwork" style="color: var(--neon-green); font-weight: bold; font-size: 12px; font-family: monospace;">PING: INJECTING_CORE</div>
     </header>
 
     <div class="main-layout">
-        <!-- SOL PANEL: GÜNCEL OYUNLAR -->
-        <div class="sidebar">
-            <div class="sidebar-title">Sistem Yapılandırması</div>
-            
-            <div class="game-item active" onclick="selectGame('brawl', this)">
-                <img src="https://play-lh.googleusercontent.com/48S76b4wZ99Ksh6scInmYI-qfH006V6986CidV9vCFFVp5S7S06BwZ8vX1O5pW2M-w" alt="Brawl Stars">
-                Brawl Stars
-            </div>
-            
-            <div class="game-item" onclick="selectGame('superbear', this)">
-                <img src="https://play-lh.googleusercontent.com/nJgqK8_2m_Y3eM-xN0gD9A-S_fM8fRkM0xL7mS3FzWp5wS7_9mZ-8J1J2Iu3U8x9wM0" alt="Super Bear">
-                Super Bear Adv.
-            </div>
+        <!-- SOL PANEL: CİHAZ OYUNLARI -->
+        <div class="sidebar" id="gameSidebar">
+            <div class="sidebar-title"><span>Cihaz Taraması</span> <span style="color: var(--neon-green);">APK MOD</span></div>
+            <!-- Oyunlar JS dinamik olarak buraya yerleşecek -->
         </div>
 
-        <!-- ORTA PANEL -->
+        <!-- MERKEZ ALAN -->
         <div class="content-area">
-            
-            <!-- ÜST AYAR GRUBU -->
             <div class="center-grid">
-                <div class="logo-display" id="gameLogoWrapper">
-                    <img id="gameLogo" src="https://play-lh.googleusercontent.com/48S76b4wZ99Ksh6scInmYI-qfH006V6986CidV9vCFFVp5S7S06BwZ8vX1O5pW2M-w" alt="Logo">
-                </div>
+                <div class="logo-display" id="gameLogo">🎮</div>
                 
                 <div class="gfx-panel">
-                    <div class="gfx-title">🔧 B-GPT Yapay Zeka GFX Ayarları</div>
+                    <div class="gfx-title">⚡ B-GPT Yapay Zeka Sürücü Ayarları</div>
                     <div class="gfx-row">
-                        <span>Çözünürlük Skalası (Resolution)</span>
-                        <select class="gfx-select" id="gfxRes"><option>Ultra Custom (2K)</option><option>Native 1080p</option><option>Performance 720p</option></select>
+                        <span>Çözünürlük Motoru</span>
+                        <select class="gfx-select"><option>DVB Custom Ultra (2K)</option><option>Native 1080p</option></select>
                     </div>
                     <div class="gfx-row">
-                        <span>Grafik Optimizasyonu</span>
-                        <select class="gfx-select"><option>Extreme FPS (No Drop)</option><option>HDR Balanced</option></select>
+                        <span>Kare Hızı Kilidi (FPS)</span>
+                        <select class="gfx-select" id="fpsSelect"><option>90 FPS Turbo</option><option>60 FPS Lock</option></select>
                     </div>
                     <div class="gfx-row">
-                        <span>Donanım Hızlandırıcı</span>
-                        <select class="gfx-select"><option>Vulkan API Forced</option><option>OpenGLES Turbo</option></select>
+                        <span>Grafik Sürücüsü</span>
+                        <select class="gfx-select"><option>Vulkan Turbo Forced</option><option>OpenGLES Core</option></select>
                     </div>
                 </div>
             </div>
 
-            <!-- TEKNİK VERİ HUD GÖSTERGELERİ -->
+            <!-- HUD SENSÖRLER -->
             <div class="hud-display">
-                <div class="hud-card"><div class="hud-label">RAM Durumu</div><div class="hud-val" id="hudRam">%79 Mapped</div></div>
-                <div class="hud-card"><div class="hud-label">İşlemci Isısı</div><div class="hud-val" id="hudTemp">41 °C</div></div>
-                <div class="hud-card"><div class="hud-label">Sinyal Oranı</div><div class="hud-val" id="hudNet">35 ms</div></div>
-                <div class="hud-card"><div class="hud-label">Yenileme Hızı</div><div class="hud-val" id="hudFps">60 Hz Lock</div></div>
+                <div class="hud-card"><div class="hud-label">RAM Temizliği</div><div class="hud-val" id="hudRam">%74 Mapped</div></div>
+                <div class="hud-card"><div class="hud-label">İşlemci Yükü</div><div class="hud-val" id="hudTemp">39 °C</div></div>
+                <div class="hud-card"><div class="hud-label">Ağ Tepkisi</div><div class="hud-val" id="hudNet">31 ms</div></div>
+                <div class="hud-card"><div class="hud-label">Aktif Hız</div><div class="hud-val" id="hudFps">60 Hz</div></div>
             </div>
 
-            <!-- BUTON ALANI -->
+            <!-- AKSİYON ALANI -->
             <div class="action-zone">
                 <button class="btn-main" id="launchBtn" onclick="runUltimateOptimization()">Sistemi Optimize Et</button>
-                <button class="btn-success" id="safeOpenBtn" onclick="triggerNativeApp()">⚡ Cihazı Ateşle ve Oyuna Gir</button>
+                <button class="btn-success" id="safeOpenBtn" onclick="launchGameNative()">⚡ Cihazı Ateşle ve Oyuna Gir</button>
             </div>
 
-            <!-- B-GPT SİBER TERMİNALİ -->
+            <!-- SİBER TERMİNAL -->
             <div class="terminal-box" id="termBox">
-                <div class="term-header">🤖 B-GPT KERNEL MONITOR v4.0</div>
-                <div class="term-line" style="color:var(--neon-green)">[SİSTEM]: DVB Yapılandırma Modülleri Enjekte Edildi. Karar mekanizması hazır, patron.</div>
+                <div class="term-header">🤖 B-GPT KERNEL MONITOR v5.0</div>
+                <div class="term-line" style="color:var(--neon-green)">[DVB]: Sistem tarama entegrasyonu başarılı. Oyun havuzu eşitlendi, patron.</div>
             </div>
         </div>
     </div>
 
-    <!-- SİBER GEÇİŞ PERDESİ -->
+    <!-- GEÇİŞ PERDESİ -->
     <div class="booster-overlay" id="boosterScreen">
         <div class="matrix-loader"></div>
-        <div id="boostStatus" class="status-log">Çirkin süreç kodları ayıklanıyor...</div>
+        <div id="boostStatus" class="status-log">Süreç başlatılıyor...</div>
     </div>
 
 <script>
-// Ses Frekans Motoru (Web Audio API - Tarayıcının kendi sesini sentezler, dış dosyaya ihtiyaç duymaz)
+// Web Audio API Sentezleyici
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSynthSound(freq, type, duration) {
     try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
         osc.type = type; osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
         osc.connect(gain); gain.connect(audioCtx.destination);
         osc.start(); osc.stop(audioCtx.currentTime + duration);
     } catch(e){}
 }
 
-const gameData = {
-    brawl: {
-        logo: "https://play-lh.googleusercontent.com/48S76b4wZ99Ksh6scInmYI-qfH006V6986CidV9vCFFVp5S7S06BwZ8vX1O5pW2M-w",
-        storeLink: "https://play.google.com/store/apps/details?id=com.supercell.brawlstars",
-        logs: [
-            "[B-GPT]: Brawl Stars bellek haritası çıkarılıyor...",
-            "[Sistem]: Dokunmatik tarama hızı (Touch Sampling Rate) 360Hz değerine zorlanıyor.",
-            "[B-GPT]: Prestij modundaki karakter anlık gecikmeleri ve gecikme döngüleri (loop) engellendi.",
-            "[Başarılı]: Karakter tepki matrisi optimize edildi. Sıradaki maça hazırsın patron!"
-        ]
-    },
-    superbear: {
-        logo: "https://play-lh.googleusercontent.com/nJgqK8_2m_Y3eM-xN0gD9A-S_fM8fRkM0xL7mS3FzWp5wS7_9mZ-8J1J2Iu3U8x9wM0",
-        storeLink: "https://play.google.com/store/apps/details?id=com.earthkwak.superbearadventure",
-        logs: [
-            "[B-GPT]: Super Bear Adventure harita önbelleği taranıyor...",
-            "[Sistem]: 3D nesne işleme havuzu (Render Pool Size) genişletiliyor.",
-            "[B-GPT]: Açık dünya haritalarındaki ani FPS düşüşlerine karşı VRAM koruma kalkanı aktif.",
-            "[Başarılı]: Grafik akıcılık kilidi açıldı. Keşfedilmeyi bekleyen sırlar akıcı modda çalışacak!"
-        ]
-    }
-};
+// Bilal Patron'un Cihazındaki Gerçek Oyun Havuzu Veri Tabanı
+const localGames = [
+    { id: "brawl", name: "Brawl Stars", emoji: "⭐", package: "com.supercell.brawlstars", tactic: "[B-GPT]: Brawl Stars için dokunmatik tarama hassasiyeti (Touch Sampling) 360Hz seviyesine kilitlendi." },
+    { id: "superbear", name: "Super Bear Adv.", emoji: "🐻", package: "com.earthkwak.superbearadventure", tactic: "[B-GPT]: Açık dünya render yükünü hafifletmek için harita önbellek havuzu (Render Pool) genişletildi." },
+    { id: "streetpro", name: "StreetPro", emoji: "🛹", package: "com.streetpro.game", tactic: "[B-GPT]: StreetPro fizik motorunun işlemciyi yormaması adına tek çekirdek frekansı maksimuma çekildi." },
+    { id: "cod", name: "Call of Duty", emoji: "🔫", package: "com.activision.callofduty.shooter", tactic: "[B-GPT]: Yüksek grafik yüküne karşı kare hızı düşüşü (FPS Drop) önleme kalkanı aktif." },
+    { id: "soccer", name: "World Soccer Champs", emoji: "⚽", package: "com.monkeybit.worldsoccerchamps", tactic: "[B-GPT]: Maç içi yapay zeka hesaplama döngüleri için bellek bant genişliği optimize edildi." },
+    { id: "cargo", name: "Cargo Simulator 2021", emoji: "🚚", package: "com.smkgames.cargosimulator2021", tactic: "[B-GPT]: Geniş harita yükleme sürelerini (loading times) kısaltmak için disk okuma hızı optimize edildi." },
+    { id: "racing", name: "Racing in Car 2021", emoji: "🚘", package: "com.cargames.racingincar2021", tactic: "[B-GPT]: Kokpit içi detay çizim grafikleri için VRAM önbelleği tamamen temizlendi." },
+    { id: "block", name: "Block Blast!", emoji: "🧱", package: "com.hungrystudio.blockblast", tactic: "[B-GPT]: Blok yerleşim kombinasyonlarındaki anlık geçiş animasyonları akıcı hale getirildi." }
+];
 
-let currentGame = 'brawl';
+let selectedGameIndex = 0;
 
-function selectGame(gameKey, element) {
-    playSynthSound(600, 'sine', 0.1);
-    document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
-
-    currentGame = gameKey;
-    const data = gameData[gameKey];
-
-    document.getElementById('gameLogo').src = data.logo;
+// Oyunları Sol Panele Dizme Fonksiyonu
+function buildSidebar() {
+    const sidebar = document.getElementById('gameSidebar');
+    // Başlık harici eski oyunları temizle
+    const titleHtml = sidebar.innerHTML;
+    let gamesHtml = "";
     
-    // Terminali güncelleme
-    const term = document.getElementById('termBox');
-    term.innerHTML = `<div class="term-header">🤖 B-GPT KERNEL MONITOR v4.0</div>`;
-    data.logs.forEach(l => {
-        term.innerHTML += `<div class="term-line">${l}</div>`;
+    localGames.forEach((game, index) => {
+        const activeClass = index === selectedGameIndex ? "active" : "";
+        gamesHtml += `
+            <div class="game-item ${activeClass}" onclick="selectGameByIndex(${index}, this)">
+                <div class="game-icon-placeholder">${game.emoji}</div>
+                ${game.name}
+            </div>
+        `;
     });
+    sidebar.innerHTML = `<div class="sidebar-title"><span>Cihaz Taraması</span> <span style="color: var(--neon-green);">APK MOD</span></div>` + gamesHtml;
+}
+
+function selectGameByIndex(index, element) {
+    playSynthSound(650, 'sine', 0.08);
+    document.querySelectorAll('.game-item').forEach(item => item.classList.remove('active'));
+    if(element) element.classList.add('active');
+
+    selectedGameIndex = index;
+    const game = localGames[index];
+
+    document.getElementById('gameLogo').innerText = game.emoji;
+    
+    // Terminal Monitor Güncelleme
+    const term = document.getElementById('termBox');
+    term.innerHTML = `
+        <div class="term-header">🤖 B-GPT KERNEL MONITOR v5.0</div>
+        <div class="term-line">[HEDEF]: ${game.name} seçildi. Paketi: ${game.package}</div>
+        <div class="term-line" style="color: var(--neon-green)">${game.tactic}</div>
+    `;
     term.scrollTop = term.scrollHeight;
 
-    // Arayüz buton durumlarını sıfırlama
+    // Reset Buton Durumları
     document.getElementById('safeOpenBtn').style.display = 'none';
     document.getElementById('launchBtn').style.display = 'inline-block';
 }
 
 function runUltimateOptimization() {
-    playSynthSound(880, 'square', 0.3);
+    playSynthSound(800, 'square', 0.25);
     const overlay = document.getElementById('boosterScreen');
     const statusText = document.getElementById('boostStatus');
     overlay.style.display = 'flex';
     
+    const targetGame = localGames[selectedGameIndex];
     const steps = [
-        { text: "⚡ [DVB KERNEL]: İşlemci frekans haritası optimize ediliyor...", freq: 400 },
-        { text: "🧹 [B-GPT]: Ön bellekteki gereksiz çöp veriler temizleniyor...", freq: 500 },
-        { text: "🖥️ [DISPLAY]: Yapay Zeka Süper Çözünürlük (Super Resolution) enjekte ediliyor...", freq: 600 },
-        { text: "🔥 [SUCCESS]: Cihaz ısısı dengelendi, 90 FPS donanım kilidi kırıldı!", freq: 1000 }
+        { text: `⚡ [DVB KERNEL]: ${targetGame.name} paketi siber analize alınıyor...`, freq: 450 },
+        { text: "🧹 [B-GPT]: İşlemci çekirdekleri oyun moduna (Gaming Mode) zorlanıyor...", freq: 550 },
+        { text: "🖥️ [DISPLAY]: 90 FPS donanım ve ekran tazeleme mührü kırılıyor...", freq: 700 },
+        { text: "🔥 [SUCCESS]: İşlem tamam! Cihaz roket modunda, patron.", freq: 1100 }
     ];
 
     steps.forEach((step, index) => {
         setTimeout(() => {
             statusText.innerText = step.text;
-            playSynthSound(step.freq, 'sawtooth', 0.15);
-        }, index * 1000);
+            playSynthSound(step.freq, 'sawtooth', 0.12);
+        }, index * 950);
     });
 
     setTimeout(() => {
         overlay.style.display = 'none';
-        playSynthSound(1200, 'sine', 0.5);
+        playSynthSound(1300, 'sine', 0.4);
 
-        // HUD Değerlerini Tavan Yaptırma
-        document.getElementById('hudRam').innerText = "%21 Ultra Clean";
-        document.getElementById('hudTemp').innerText = "34 °C Stable";
-        document.getElementById('hudNet').innerText = "18 ms Fast";
+        // HUD Göstergelerini Uçurma
+        document.getElementById('hudRam').innerText = "%14 Extreme Clean";
+        document.getElementById('hudTemp').innerText = "32 °C Cold";
+        document.getElementById('hudNet').innerText = "14 ms Hyper";
         document.getElementById('hudFps').innerText = "90 Hz Turbo ⚡";
 
-        // Buton Değişimi
+        // Buton Geçişi
         document.getElementById('launchBtn').style.display = 'none';
         document.getElementById('safeOpenBtn').style.display = 'block';
-    }, 4200);
+    }, 4000);
 }
 
-function triggerNativeApp() {
-    playSynthSound(1500, 'sine', 0.2);
-    const data = gameData[currentGame];
-    // Google Play Store üzerinden doğrudan tetikleyerek tarayıcı korumasını güvenle ezip geçiyoruz
-    window.open(data.storeLink, '_blank');
+// Oyunu Yerel Android Sisteminden Doğrudan Başlatma Fonksiyonu
+function launchGameNative() {
+    playSynthSound(1600, 'sine', 0.15);
+    const game = localGames[selectedGameIndex];
+    
+    // Eğer APK içerisindeysek, Java köprümüz aracılığıyla Android yerel işletim sistemine emir gönderir
+    if (window.AndroidInterface && window.AndroidInterface.launchApp) {
+        window.AndroidInterface.launchApp(game.package);
+    } else {
+        // Eğer hala web tarayıcısındaysak, tarayıcı engelini aşmak için yerel URI şeması fırlatır
+        window.location.href = "android-app://" + game.package;
+        
+        // Eğer cihaz derin linki doğrudan yemezse, emniyet olarak 1 saniye sonra paketi tetikler
+        setTimeout(() => {
+            window.open("https://play.google.com/store/apps/details?id=" + game.package, '_blank');
+        }, 1000);
+    }
 }
 
-// Canlı Ping Algoritması Simülasyonu
+// İlk Kurulum
+buildSidebar();
+selectGameByIndex(0, null);
+
+// Canlı Ağ Simülatörü
 setInterval(() => {
-    const randomPing = Math.floor(Math.random() * (45 - 28 + 1)) + 28;
-    document.getElementById('liveNetwork').innerText = `PING: ${randomPing} MS // ENGINES_OK`;
-}, 3000);
+    const randomPing = Math.floor(Math.random() * (38 - 22 + 1)) + 22;
+    document.getElementById('liveNetwork').innerText = `PING: ${randomPing} MS // ENGINES_ACTIVE`;
+}, 2500);
 </script>
 </body>
-  </html>
-
+</html>
